@@ -18,11 +18,11 @@ const leerlike  = async (req , res, next) => {
 
 const agregarlike  = async (req ,res, next) => {
 
-     const{titulo,url,descripcion} =req.body
+     const{titulo,url,descripcion,likes} =req.body
     try {
          
-        const consulta  ="INSERT INTO post values (DEFAULT, $1, $2,$3,0)"
-        const values =[titulo , url , descripcion]
+        const consulta  ="INSERT INTO post values (DEFAULT, $1, $2,$3,$4)"
+        const values =[titulo , url , descripcion,likes]
         const resultado = await pool.query(consulta,values)
         console.log("post agregado")
 
@@ -35,4 +35,33 @@ const agregarlike  = async (req ,res, next) => {
     }
 }
 
-module.exports={leerlike,agregarlike}
+
+
+const actualizarlike  = async (id) => {
+
+        
+       const consulta  ="UPDATE post SET likes = likes +1 WHERE id = $1"
+       const values =[id]
+       const resultado = await pool.query(consulta,values)
+       console.log("post  actualizado")
+        console.log({resultado})
+      
+
+}
+
+
+
+const borrarPost  = async (id) => {
+
+        
+    const consulta  ="DELETE FROM post WHERE id = $1"
+    const values =[id]
+    const resultado = await pool.query(consulta,values)
+    console.log("post eliminado")
+  
+   
+
+}
+
+
+module.exports={leerlike,agregarlike, actualizarlike, borrarPost}
